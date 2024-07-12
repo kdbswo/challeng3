@@ -14,14 +14,18 @@ fun main() {
 
     editor.setStrategy(AlignCenter())
     println(editor.executeEditor(str))
+
+    Subscriber().start()
 }
 
+// singleton pattern
 object Logger {
     fun log(message: String) {
         println(message)
     }
 }
 
+//strategy pattern
 interface TextAlignmentStrategy {
     fun align(input: String): String
 
@@ -58,3 +62,37 @@ class TextEditor(private var textAlignmentStrategy: TextAlignmentStrategy) {
     }
 
 }
+
+// Observer pattern
+interface Observer {
+    fun publication(count: Int)
+}
+
+class Newsletter(var observer: Observer) {
+    fun emit() {
+        for (i in 1..100) {
+            if (i % 3 == 0) observer.publication(i)
+        }
+    }
+}
+
+class Subscriber() : Observer {
+    override fun publication(count: Int) {
+        println("뉴스 $count")
+    }
+
+    fun start() {
+        val newsletter = Newsletter(this)
+        newsletter.emit()
+    }
+
+}
+
+
+
+
+
+
+
+
+
